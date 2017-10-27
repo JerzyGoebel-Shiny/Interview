@@ -1,15 +1,21 @@
 package com.mysite.selenium;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class LoginTest extends FunctionalTest {
 
+    LogInPage logInPage;
+
+    @Before
+    public void initiateLoginPage(){
+        logInPage = new LogInPage(driver);
+        logInPage.navigateToWebpage();
+    }
+
     @Test
     public void canLoginSuccessfully() {
-        LogInPage logInPage = new LogInPage(driver);
-
-        logInPage.navigateToWebpage();
 
         logInPage.typeUsername("admin");
         logInPage.typePassword("waction");
@@ -22,9 +28,6 @@ public class LoginTest extends FunctionalTest {
 
     @Test
     public void failsOnInvalidCredentials() {
-        LogInPage logInPage = new LogInPage(driver);
-
-        logInPage.navigateToWebpage();
 
         logInPage.typeUsername("user");
         logInPage.typePassword("password");
@@ -37,9 +40,6 @@ public class LoginTest extends FunctionalTest {
 
     @Test
     public void failsOnEmptyCredentials() {
-        LogInPage logInPage = new LogInPage(driver);
-
-        logInPage.navigateToWebpage();
 
         logInPage.logInExpectFailure();
 
