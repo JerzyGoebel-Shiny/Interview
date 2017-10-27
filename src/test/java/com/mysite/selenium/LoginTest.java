@@ -1,58 +1,48 @@
 package com.mysite.selenium;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginTest extends FunctionalTest {
 
+    LogInPage logInPage;
+
+    @Before
+    public void initiateLoginPage(){
+        logInPage = new LogInPage(driver);
+        logInPage.navigateToWebpage();
+    }
+
     @Test
     public void canLoginSuccessfully() {
-        driver.get("localhost:9080");
-        WebDriverWait _timeout = new WebDriverWait(driver, 10);
 
-        WebElement userBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_BOX_USER));
-        userBox.sendKeys("admin");
+        logInPage.typeUsername("admin");
+        logInPage.typePassword("waction");
+        logInPage.logIn();
 
-        WebElement passBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_BOX_PASS));
-        passBox.sendKeys("waction");
+        HomePage homePage = new HomePage(driver);
 
-        WebElement cnctBtn = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_LOG_BUTN));
-        cnctBtn.click();
-
-        WebElement hookTab = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.TAB_HOOK));
-        Assert.assertEquals(Striim.EXP_TAB, driver.getTitle());
+        Assert.assertTrue(homePage.isOpened());
     }
 
     @Test
     public void failsOnInvalidCredentials() {
-        driver.get("localhost:9080");
-        WebDriverWait _timeout = new WebDriverWait(driver, 10);
 
-        WebElement userBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_BOX_USER));
-        userBox.sendKeys("nimda");
+        logInPage.typeUsername("user");
+        logInPage.typePassword("password");
+        logInPage.logInExpectFailure();
 
-        WebElement passBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_BOX_PASS));
-        passBox.sendKeys("111111");
 
-        WebElement cnctBtn = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_LOG_BUTN));
-        cnctBtn.click();
+        Assert.assertNotNull(logInPage.errorMessage());
 
-        WebElement errorBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.MSG_ERR));
-        Assert.assertNotNull(errorBox);
     }
 
     @Test
     public void failsOnEmptyCredentials() {
-        driver.get("localhost:9080");
-        WebDriverWait _timeout = new WebDriverWait(driver, 10);
 
-        WebElement cnctBtn = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.CSS_LOG_BUTN));
-        cnctBtn.click();
+        logInPage.logInExpectFailure();
 
-        WebElement errorBox = _timeout.until(ExpectedConditions.elementToBeClickable(Striim.MSG_ERR));
-        Assert.assertEquals("Please make sure you have filled out all the fields.", errorBox.getText());
+        Assert.assertEquals("Please make sure you have filled out all the fields.", logInPage.errorMessage());
     }
 }
