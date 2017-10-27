@@ -23,7 +23,7 @@ public class LoginTest extends FunctionalTest {
 
         HomePage homePage = new HomePage(driver);
 
-        Assert.assertEquals("Home",homePage.topTabName());
+        Assert.assertTrue(homePage.isOpened());
     }
 
     @Test
