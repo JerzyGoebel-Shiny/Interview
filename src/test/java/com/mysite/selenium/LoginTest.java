@@ -7,9 +7,9 @@ public class LoginTest extends FunctionalTest {
 
     @Test
     public void canLoginSuccessfully() {
-        driver.get("localhost:9080");
-
         LogInPage logInPage = new LogInPage(driver);
+
+        logInPage.navigateToWebpage();
 
         logInPage.typeUsername("admin");
         logInPage.typePassword("waction");
@@ -22,9 +22,9 @@ public class LoginTest extends FunctionalTest {
 
     @Test
     public void failsOnInvalidCredentials() {
-        driver.get("localhost:9080");
-
         LogInPage logInPage = new LogInPage(driver);
+
+        logInPage.navigateToWebpage();
 
         logInPage.typeUsername("user");
         logInPage.typePassword("password");
@@ -37,9 +37,9 @@ public class LoginTest extends FunctionalTest {
 
     @Test
     public void failsOnEmptyCredentials() {
-        driver.get("localhost:9080");
-
         LogInPage logInPage = new LogInPage(driver);
+
+        logInPage.navigateToWebpage();
 
         logInPage.logInExpectFailure();
 

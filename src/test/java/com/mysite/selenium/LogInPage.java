@@ -7,14 +7,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LogInPage extends PageObject{
 
+    public void navigateToWebpage(){
+        driver.get("localhost:9080");
+        username  = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_BOX_USER)));
+        password  = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_BOX_PASS)));
+        logButton = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_LOG_BUTN)));
+    }
+
     WebDriverWait _timeout = new WebDriverWait(driver, 10);
 
-
-
-    private WebElement username   = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_BOX_USER)));
-    private WebElement password   = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_BOX_PASS)));
-    private WebElement logButton  = _timeout.until(ExpectedConditions.elementToBeClickable(driver.findElement(Statics.CSS_LOG_BUTN)));
-
+    private WebElement username;
+    private WebElement password;
+    private WebElement logButton;
 
     public LogInPage(WebDriver driver){
         super(driver);
